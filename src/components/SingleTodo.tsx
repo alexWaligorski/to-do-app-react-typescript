@@ -3,11 +3,12 @@ import { Todo } from "./model";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { MdDone } from "react-icons/md";
 import "./styles.css";
+import { Actions } from "../reducer";
 
 interface Props {
   todo: Todo;
   todos: Todo[];
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  setTodos: React.Dispatch<Actions>;
 }
 
 const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
@@ -15,22 +16,16 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
   const [editTodo, setEditTodo] = useState<string>(todo.todo);
 
   const handleDone = (id: number) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
-      )
-    );
+    setTodos({ type: "done", payload: id });
   };
 
   const handleDelete = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    setTodos({ type: "remove", payload: id });
   };
 
   const handleSubmit = (e: React.FormEvent, id: number) => {
     e.preventDefault();
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, todo: editTodo } : todo))
-    );
+    setTodos({ type: "edit", payload: { id: id, todo: editTodo } });
 
     setEdit(false);
   };

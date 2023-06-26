@@ -1,10 +1,11 @@
 import "./styles.css";
 import { Todo } from "./model";
 import SingleTodo from "./SingleTodo";
+import { Actions } from "../reducer";
 
 interface Props {
   todos: Todo[];
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  setTodos: React.Dispatch<Actions>;
 }
 
 const TodoList: React.FC<Props> = ({ todos, setTodos }) => {

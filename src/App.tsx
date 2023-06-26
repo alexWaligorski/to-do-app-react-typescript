@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import InputField from "./components/InputField";
-import { Todo } from "./components/model";
 import TodoList from "./components/TodoList";
+import TodoReducer from "./reducer";
 
 import "./App.css";
 
 const App: React.FC = () => {
   const [todo, setTodo] = useState<string>("");
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, dispatch] = useReducer(TodoReducer, []);
 
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (todo) {
-      setTodos([...todos, { id: Date.now(), todo: todo, isDone: false }]);
+      dispatch({ type: "add", payload: todo });
     }
     setTodo("");
   };
@@ -24,10 +24,10 @@ const App: React.FC = () => {
         todo={todo}
         setTodo={setTodo}
         todos={todos}
-        setTodos={setTodos}
+        setTodos={dispatch}
         handleAdd={handleAdd}
       />
-      <TodoList todos={todos} setTodos={setTodos} />
+      <TodoList todos={todos} setTodos={dispatch} />
     </div>
   );
 };
